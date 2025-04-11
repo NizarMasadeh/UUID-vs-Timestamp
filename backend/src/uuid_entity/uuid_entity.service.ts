@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UuidEntity } from './entities/uuid_entity.entity';
+import { BatchResult } from 'src/models/id-body.interface';
 
 @Injectable()
 export class UuidEntityService {
@@ -15,12 +16,7 @@ export class UuidEntityService {
     return this.uuidRepository.save(entity);
   }
 
-  async createBatch(count: number): Promise<{
-    success: number;
-    failed: number;
-    collisions: number;
-    executionTime: number;
-  }> {
+  async createBatch(count: number): Promise<BatchResult> {
     const startTime = Date.now();
     let success = 0;
     let failed = 0;

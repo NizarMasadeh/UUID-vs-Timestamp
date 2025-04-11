@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TimestampEntity } from './entities/timestamp_entity.entity';
+import { BatchResult } from 'src/models/id-body.interface';
 
 @Injectable()
 export class TimestampEntityService {
@@ -16,12 +17,7 @@ export class TimestampEntityService {
     return this.timestampRepository.save(entity);
   }
 
-  async createBatch(count: number): Promise<{
-    success: number;
-    failed: number;
-    collisions: number;
-    executionTime: number;
-  }> {
+  async createBatch(count: number): Promise<BatchResult> {
     const startTime = Date.now();
     let success = 0;
     let failed = 0;

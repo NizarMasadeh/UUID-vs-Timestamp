@@ -5,7 +5,9 @@ import { TimestampEntityService } from './timestamp_entity.service';
 
 @Controller('timestamp-entity')
 export class TimestampEntityController {
-  constructor(private readonly timestampEntityService: TimestampEntityService) { }
+  constructor(
+    private readonly timestampEntityService: TimestampEntityService
+  ) { }
 
   @Post()
   async create(): Promise<TimestampEntity> {
