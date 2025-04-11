@@ -1,0 +1,191 @@
+<div class="app-container" @fadeIn>
+  <header class="app-header">
+    <div class="header-content">
+      <div class="logo">
+        <i class="pi pi-database"></i>
+      </div>
+      <div class="title-container">
+        <h1 class="title">{{title}}</h1>
+        <p class="subtitle">Demonstrating why UUIDs are better than timestamp-based IDs</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <section class="control-panel" @slideIn>
+      <div class="control-panel-content">
+        <div class="control-header">
+          <i class="pi pi-sliders-h"></i>
+          <h2>Test Configuration</h2>
+        </div>
+
+        <div class="control-body">
+          <div class="form-group">
+            <div class="range-control">
+              <span class="request-count-display">{{requestCount}} requests</span>
+              <input nInputText type="range" 
+                label="Number of concurrent requests:" 
+                [(ngModel)]="requestCount" 
+                [min]="100"
+                [max]="10000" 
+                [step]="100" 
+                (ngModelChange)="onRequestCountChange($event)">
+            </div>
+            <p class="hint">Higher values will increase collision probability</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo-container" @staggered>
+      <div class="demo-panel stagger-item">
+        <app-uuid-demo [requestCount]="requestCount" (resultsEmitter)="onUuidResults($event)">
+        </app-uuid-demo>
+      </div>
+
+      <div class="demo-panel stagger-item">
+        <app-timestamp-demo [requestCount]="requestCount" (resultsEmitter)="onTimestampResults($event)">
+        </app-timestamp-demo>
+      </div>
+    </section>
+
+    <section class="comparison" *ngIf="uuidResults && timestampResults" @slideIn>
+      <div class="comparison-header">
+        <i class="pi pi-chart-bar"></i>
+        <h2>Comparison Results</h2>
+      </div>
+
+      <div class="comparison-content">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>UUID</th>
+              <th>Timestamp</th>
+              <th>Difference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Success Rate</td>
+              <td>
+                <div class="metric-value">
+                  <span class="value">{{uuidResults.success}}</span>
+                  <span class="percentage">({{(uuidResults.success / requestCount * 100).toFixed(2)}}%)</span>
+                </div>
+              </td>
+              <td>
+                <div class="metric-value">
+                  <span class="value">{{timestampResults.success}}</span>
+                  <span class="percentage">({{(timestampResults.success / requestCount * 100).toFixed(2)}}%)</span>
+                </div>
+              </td>
+              <td>
+                <div class="difference" [class.positive]="uuidResults.success > timestampResults.success"
+                  [class.negative]="uuidResults.success < timestampResults.success">
+                  <i class="pi" [class.pi-arrow-up]="uuidResults.success > timestampResults.success"
+                    [class.pi-arrow-down]="uuidResults.success < timestampResults.success"></i>
+                  <span>{{Math.abs(uuidResults.success - timestampResults.success)}}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Collisions</td>
+              <td>
+                <div class="metric-value">
+                  <span class="value">{{uuidResults.collisions}}</span>
+                </div>
+              </td>
+              <td>
+                <div class="metric-value">
+                  <span class="value">{{timestampResults.collisions}}</span>
+                </div>
+              </td>
+              <td>
+                <div class="difference" [class.positive]="uuidResults.collisions < timestampResults.collisions"
+                  [class.negative]="uuidResults.collisions > timestampResults.collisions">
+                  <i class="pi" [class.pi-arrow-up]="uuidResults.collisions < timestampResults.collisions"
+                    [class.pi-arrow-down]="uuidResults.collisions > timestampResults.collisions"></i>
+                  <span>{{Math.abs(uuidResults.collisions - timestampResults.collisions)}}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Execution Time</td>
+              <td>
+                <div class="metric-value">
+                  <span class="value">{{uuidResults.executionTime}}</span>
+                  <span class="unit">ms</span>
+                </div>
+              </td>
+              <td>
+                <div class="metric-value">
+                  <span class="value">{{timestampResults.executionTime}}</span>
+                  <span class="unit">ms</span>
+                </div>
+              </td>
+              <td>
+                <div class="difference" [class.positive]="uuidResults.executionTime < timestampResults.executionTime"
+                  [class.negative]="uuidResults.executionTime > timestampResults.executionTime">
+                  <i class="pi" [class.pi-arrow-up]="uuidResults.executionTime < timestampResults.executionTime"
+                    [class.pi-arrow-down]="uuidResults.executionTime > timestampResults.executionTime"></i>
+                  <span>{{Math.abs(uuidResults.executionTime - timestampResults.executionTime)}}</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="conclusion">
+          <div class="conclusion-header">
+            <i class="pi pi-info-circle"></i>
+            <h3>Key Findings</h3>
+          </div>
+
+          <div class="conclusion-content">
+            <div class="finding">
+              <div class="finding-icon" [class.success-icon]="uuidResults.collisions === 0"
+                [class.warning-icon]="uuidResults.collisions > 0">
+                <i class="pi" [class.pi-check-circle]="uuidResults.collisions === 0"
+                  [class.pi-exclamation-circle]="uuidResults.collisions > 0"></i>
+              </div>
+              <div class="finding-content">
+                <h4>UUID</h4>
+                <p>{{uuidResults.collisions === 0 ? 'No collisions detected!' :
+                  uuidResults.collisions + ' collisions occurred'}}</p>
+              </div>
+            </div>
+
+            <div class="finding">
+              <div class="finding-icon" [class.success-icon]="timestampResults.collisions === 0"
+                [class.warning-icon]="timestampResults.collisions > 0">
+                <i class="pi" [class.pi-check-circle]="timestampResults.collisions === 0"
+                  [class.pi-exclamation-circle]="timestampResults.collisions > 0"></i>
+              </div>
+              <div class="finding-content">
+                <h4>Timestamp</h4>
+                <p>{{timestampResults.collisions === 0 ? 'No collisions detected (unusual at high request counts)' :
+                  timestampResults.collisions + ' collisions occurred!'}}</p>
+              </div>
+            </div>
+
+            <div class="finding">
+              <div class="finding-icon info-icon">
+                <i class="pi pi-lightbulb"></i>
+              </div>
+              <div class="finding-content">
+                <h4>Why This Matters</h4>
+                <p>In real applications, collisions cause database errors, failed transactions, and data integrity
+                  issues. UUIDs provide a reliable solution for distributed systems.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>UUID vs Timestamp Collision Demo | Created with Angular</p>
+  </footer>
+</div>

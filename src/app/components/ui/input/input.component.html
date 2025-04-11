@@ -1,0 +1,17 @@
+<div class="input-container" [class.range-container]="type === 'range'">
+    <label *ngIf="label" class="input-label">{{label}}</label>
+
+    <div class="input-wrapper" [class.has-icon-left]="icon && iconPosition === 'left'"
+        [class.has-icon-right]="icon && iconPosition === 'right'" [class.range-wrapper]="type === 'range'">
+
+        <i *ngIf="icon && iconPosition === 'left'" class="input-icon left pi {{icon}}"></i>
+
+        <input [type]="type" [placeholder]="placeholder" [disabled]="disabled" [min]="min" [max]="max" [step]="step"
+            [(ngModel)]="value" (ngModelChange)="onChange($event)" (blur)="onTouched()" class="custom-input"
+            [class.range-input]="type === 'range'">
+
+        <div *ngIf="type === 'range' && showValue" class="range-value">{{value}}</div>
+
+        <i *ngIf="icon && iconPosition === 'right'" class="input-icon right pi {{icon}}"></i>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+<div class="demo-box" @fadeIn>
+    <div class="info-card">
+        <div class="info-header">
+            <i class="pi pi-key info-icon"></i>
+            <h3>UUID-based IDs</h3>
+        </div>
+        <div class="info-content">
+            <p>UUIDs are 128-bit globally unique identifiers with extremely low collision probability.</p>
+            <div class="entity-counter">
+                <span class="counter-label">Total entities:</span>
+                <span class="counter-value">{{totalEntities}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="results-container" *ngIf="results" @listAnimation>
+        <div class="result-item">
+            <div class="result-icon success-icon">
+                <i class="pi pi-check-circle"></i>
+            </div>
+            <div class="result-content">
+                <span class="result-label">Success</span>
+                <span class="result-value success">{{results.success}}</span>
+            </div>
+        </div>
+
+        <div class="result-item">
+            <div class="result-icon failed-icon">
+                <i class="pi pi-times-circle"></i>
+            </div>
+            <div class="result-content">
+                <span class="result-label">Failed</span>
+                <span class="result-value failed">{{results.failed}}</span>
+            </div>
+        </div>
+
+        <div class="result-item">
+            <div class="result-icon collision-icon">
+                <i class="pi pi-exclamation-triangle"></i>
+            </div>
+            <div class="result-content">
+                <span class="result-label">Collisions</span>
+                <span class="result-value failed">{{results.collisions}}</span>
+            </div>
+        </div>
+
+        <div class="result-item">
+            <div class="result-icon time-icon">
+                <i class="pi pi-stopwatch"></i>
+            </div>
+            <div class="result-content">
+                <span class="result-label">Time</span>
+                <span class="result-value">{{results.executionTime}} ms</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress-container" *ngIf="loading">
+        <div class="progress-label">Running test...</div>
+        <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="progressValue"></div>
+        </div>
+        <div class="progress-percentage">{{progressValue.toFixed(0)}}%</div>
+    </div>
+
+    <div class="actions">
+        <app-button 
+            [label]="'Run Test (' + requestCount + ' requests)'" 
+            [loading]="loading" 
+            [disabled]="loading"
+            [icon]="'pi-play'" 
+            variant="primary" 
+            (click)="runTest(); $event.stopPropagation()"></app-button>
+
+        <app-button label="Clear Data" [loading]="loading" [disabled]="loading" [icon]="'pi-trash'" variant="secondary"
+            (click)="clear()"></app-button>
+    </div>
+</div>

@@ -1,0 +1,202 @@
+/* Global styles with your custom variables */
+@use "nzrm-ng/src/lib/styles/global-styles.scss";
+@import 'primeicons/primeicons.css';
+
+:root {
+    /* Color Palette */
+    --deep-blue: #0a192f;
+    --medium-blue: #172a45;
+    --light-blue: #303c55;
+    --soft-pink: #ff6b81;
+    --light-pink: #ff9eb5;
+    --dark-text: #0a0a0a;
+    --light-text: #f8f8f8;
+    --text-gray: #8892b0;
+
+    /* Theme Variables */
+    --bg-color: var(--deep-blue);
+    --bg-primary: var(--medium-blue);
+    --bg-secondary: var(--light-blue);
+    --bg-card: #1e2d48;
+    --text-color: var(--light-text);
+    --text-primary: var(--light-text);
+    --text-secondary: var(--text-gray);
+    --primary-color: #64ffda;
+    --primary-color-2: #57e3c3;
+    --secondary-color: #8892b0;
+    --accent-color: var(--soft-pink);
+    --accent-primary: var(--soft-pink);
+    --accent-secondary: var(--light-pink);
+    --accent-tertiary: #a3a8c3;
+    --dark-color: #020c1b;
+    --light-color: #e6f1ff;
+    --dark-purple: #2d1b4e;
+    --bg-dark: #0a0c10;
+
+    /* UI Elements */
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-small: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.12);
+    --shadow-large: 0 8px 16px rgba(0, 0, 0, 0.15);
+
+    /* Additional Colors */
+    --color-primary: var(--primary-color);
+    --color-secondary: var(--secondary-color);
+    --color-accent: var(--accent-color);
+    --color-dark: var(--dark-color);
+    --color-light: var(--light-color);
+    --color-gray: var(--text-gray);
+    --color-wood: #a67c52;
+
+    /* Typography */
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --font-secondary: 'JetBrains Mono', monospace;
+
+    /* Transitions */
+    --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+    --transition-slow: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+    --transition-medium: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    --transition-fast: all 0.15s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+    /* Gradients */
+    --gradient: linear-gradient(120deg, var(--primary-color), var(--accent-color));
+}
+
+/* Base styles */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: var(--font-primary);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 5px rgba(100, 255, 218, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(100, 255, 218, 0.8);
+    }
+
+    100% {
+        box-shadow: 0 0 5px rgba(100, 255, 218, 0.5);
+    }
+}
+
+/* Utility classes */
+.success {
+    color: var(--primary-color);
+}
+
+.failed {
+    color: var(--accent-color);
+}
+
+.warning {
+    color: #ffd166;
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.animate-slideIn {
+    animation: slideInUp 0.5s ease-out;
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow {
+    animation: glow 2s infinite;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color-2);
+}

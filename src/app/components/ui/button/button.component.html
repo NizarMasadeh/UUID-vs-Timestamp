@@ -1,0 +1,11 @@
+<button class="custom-button" [class.primary]="variant === 'primary'" [class.secondary]="variant === 'secondary'"
+    [class.accent]="variant === 'accent'" [class.outline]="variant === 'outline'" [class.small]="size === 'small'"
+    [class.medium]="size === 'medium'" [class.large]="size === 'large'" [class.disabled]="disabled"
+    [class.loading]="loading" [class.full-width]="fullWidth" [disabled]="disabled || loading" (click)="onClick($event)">
+    <div class="button-content">
+        <i *ngIf="icon && iconPosition === 'left'" class="pi {{icon}}"></i>
+        <span *ngIf="loading" class="loader"></span>
+        <span *ngIf="!loading" class="label">{{label}}</span>
+        <i *ngIf="icon && iconPosition === 'right'" class="pi {{icon}}"></i>
+    </div>
+</button>
